@@ -73,11 +73,11 @@ vlan 10
  
 vlan 20
 
- name Vlan RH
-vlan 30
- name Vlan IT
-vlan 99
- name Vlan native
+	 name Vlan RH
+	vlan 30
+ 	name Vlan IT
+	vlan 99
+ 	name Vlan native
 
 interface range fa0/2
 switchport mode access
@@ -91,8 +91,8 @@ interface fa0/3
  switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,99
 
-end
-write memory
+	end
+	write memory
 
 
 Sur le Switch 2 (S2 du site 1) :
