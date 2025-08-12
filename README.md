@@ -61,35 +61,30 @@ Objectif : Créer les VLANs, attribuer les IP sur les sous-interfaces des routeu
 
 Sur le Switch 1 (S1 du site 1) :
 
-enable
-
-configure terminal
-
-! Création des VLAN
-
-vlan 10
-
- name Vlan Admin
+	enable
+	configure terminal
  
-vlan 20
-
+	! Création des VLAN
+	vlan 10
+ 	name Vlan Admin
+	vlan 20
 	 name Vlan RH
 	vlan 30
- 	name Vlan IT
+ 	 name Vlan IT
 	vlan 99
  	name Vlan native
 
-interface range fa0/2
-switchport mode access
-switchport access vlan 10
-exit
+	interface range fa0/2
+	switchport mode access
+	switchport access vlan 10
+	exit
 
 
-! Port vers le routeur (trunk)
-interface fa0/3
- switchport mode trunk
- switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 10,20,30,99
+	! Port vers le routeur (trunk)
+	interface fa0/3
+	 switchport mode trunk
+	 switchport trunk encapsulation dot1q
+	 switchport trunk allowed vlan 10,20,30,99
 
 	end
 	write memory
@@ -98,85 +93,84 @@ interface fa0/3
 Sur le Switch 2 (S2 du site 1) :
 
 
-enable
-configure terminal
+	enable
+	configure terminal
 
-! Création des VLAN
-vlan 10
- name Vlan Admin
-vlan 20
- name Vlan RH
-vlan 30
- name Vlan IT
-vlan 99
- name Vlan native
-
-
-interface range fa0/2
-switchport mode access
-switchport access vlan 20
-exit
+	! Création des VLAN
+	vlan 10
+ 	name Vlan Admin
+	vlan 20
+	 name Vlan RH
+	vlan 30
+ 	name Vlan IT
+	vlan 99
+	 name Vlan native
 
 
-interface range fa0/3
-switchport mode access
-switchport access vlan 30
-exit
+	interface range fa0/2
+	switchport mode access
+	switchport access vlan 20
+	exit
 
-! Port vers le routeur (trunk)
-interface fa0/1
- switchport mode trunk
- switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 10,20,30,99
 
-end
-write memory
+	interface range fa0/3
+	switchport mode access
+	switchport access vlan 30
+	exit
+
+	! Port vers le routeur (trunk)
+	interface fa0/1
+	switchport mode trunk
+ 	switchport trunk encapsulation dot1q
+ 	switchport trunk allowed vlan 10,20,30,99
+
+	end
+	write memory
 
 Sur le router Router 1 (R1 du site 1)
 
-conf t
-interface Fa0/0.10
-encapsulation dot1q 10
-ip address 192.168.10.1 255.255.255.0
-exit
+	conf t
+	interface Fa0/0.10
+	encapsulation dot1q 10
+	ip address 192.168.10.1 255.255.255.0
+	exit
 
-interface Fa0/0.20
-encapsulation dot1q 20
-ip address 192.168.20.1 255.255.255.0
-exit
+	interface Fa0/0.20
+	encapsulation dot1q 20
+	ip address 192.168.20.1 255.255.255.0
+	exit
 
-interface Fa0/0.30
-encapsulation dot1q 30
-ip address 192.168.30.1 255.255.255.0
-exit
+	interface Fa0/0.30
+	encapsulation dot1q 30
+	ip address 192.168.30.1 255.255.255.0
+	exit
 
-interface Fa0/0.99
-encapsulation dot1q 99 native
-no ip address
-exit
+	interface Fa0/0.99
+	encapsulation dot1q 99 native
+	no ip address
+	exit
 
 Après configuration manuelle des PC , exemple avec le PC1 dans le Vlan 10 (Admin) : PC1 > Desktop > IP Configuration  :
 
-![Topologie finale](images/Configuration_étape1_PC1.png)
-
+<img width="507" height="114" alt="Configuration_étape1_PC1" src="https://github.com/user-attachments/assets/ed57524e-ebbb-413d-ab6f-b6a8c729ce0a" />
 
 Test de connectivité :
 
 Depuis PC1 vers PC2 :
 
-ping 192.168.20.10 
+	ping 192.168.20.10 
 
-Réponse :Pinging 192.168.30.30 with 32 bytes of data:
+Réponse : Pinging 192.168.30.30 with 32 bytes of data:
 
-Request timed out.
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Request timed out.
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
 
-Ping statistics for 192.168.30.30:
-    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
-Approximate round trip times in milli-seconds:
-    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+	Ping statistics for 192.168.30.30:
+    	Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+	Approximate round trip times in milli-seconds:
+    	Minimum = 0ms, Maximum = 0ms, Average = 0ms
 
 
 ### Étape 2 —Ajout d’un deuxième site + Routage dynamique OSPF
@@ -184,57 +178,57 @@ Objectif : Créer un deuxième site distant, composé d’un routeur (R2), d’u
 
 Sur le Router 2 (R2 du site 2) :
 
-enable
-conf t
+	enable
+	conf t
 
-! Interface LAN vers switch/PC2
-interface Fa0/1
-ip address 192.168.40.1 255.255.255.0
-no shutdown
-exit
+	! Interface LAN vers switch/PC2
+	interface Fa0/1
+	ip address 192.168.40.1 255.255.255.0
+	no shutdown
+	exit
 
-! Interface WAN vers R1
-interface Fa0/0
-ip address 10.0.0.2 255.255.255.252
-no shutdown
-exit
+	! Interface WAN vers R1
+	interface Fa0/0
+	ip address 10.0.0.2 255.255.255.252
+	no shutdown
+	exit
 
-end
-write m
+	end
+	write m
 
 Sur le Router 1 (R1 du site 1) :
 
-conf t
-interface Fa0/1
-ip address 10.0.0.1 255.255.255.252
-no shutdown
-exit
+	conf t
+	interface Fa0/1
+	ip address 10.0.0.1 255.255.255.252
+	no shutdown
+	exit
 
 Ensuite configuration OSPF pour les routers R1 et R2 :
 
 Sur R1 :
 
-conf t
-router ospf 1
-network 192.168.10.0 0.0.0.255 area 0
-network 192.168.20.0 0.0.0.255 area 0
-network 192.168.30.0 0.0.0.255 area 0
-network 10.0.0.0 0.0.0.3 area 0
-exit
+	conf t
+	router ospf 1
+	network 192.168.10.0 0.0.0.255 area 0
+	network 192.168.20.0 0.0.0.255 area 0
+	network 192.168.30.0 0.0.0.255 area 0
+	network 10.0.0.0 0.0.0.3 area 0
+	exit
 
 Sur R2 :
 
-conf t
-router ospf 1
-network 192.168.40.0 0.0.0.255 area 0
-network 10.0.0.0 0.0.0.3 area 0
-exit
+	conf t
+	router ospf 1
+	network 192.168.40.0 0.0.0.255 area 0
+	network 10.0.0.0 0.0.0.3 area 0
+	exit
 
 Vérifie que OSPF a bien appris les routes :
 
 Depuis R2 :
 
-show ip route ospf 
+	show ip route ospf 
 
 Réponse : 
 
@@ -247,46 +241,45 @@ Donc les routes vers les différents sous-réseaux du site 1 sont bien connues e
 ### Étape 3 : Mise en place d’un VPN IPsec site-à-site entre R1 et R2
 Objectif : Ce tunnel VPN va chiffrer les communications entre les deux routeurs — comme si les deux sites étaient reliés par un câble privé sécurisé.
 
-
 On commence par définir les ACL , pour chiffrer le bon traffic:
 
 Router R1 (site 1):
 
-ip access-list extended VPN-TRAFFIC
- permit ip 192.168.10.0 0.0.0.255 192.168.40.0 0.0.0.255
+	ip access-list extended VPN-TRAFFIC
+ 	permit ip 192.168.10.0 0.0.0.255 192.168.40.0 0.0.0.255
 
 Router R2 (site 2):
 
-ip access-list extended VPN-TRAFFIC
- permit ip 192.168.40.0 0.0.0.255 192.168.10.0 0.0.0.255
+	ip access-list extended VPN-TRAFFIC
+ 	permit ip 192.168.40.0 0.0.0.255 192.168.10.0 0.0.0.255
 
 
 Mise en place de la politique de sécuriter (ISAKMP) :
 
 Sur R1 et R2 :
 
-crypto isakmp policy 10
- encr aes
- hash sha
- authentication pre-share
- group 2
- lifetime 86400
+	crypto isakmp policy 10
+	encr aes
+ 	hash sha
+ 	authentication pre-share
+ 	group 2
+ 	lifetime 86400
 
 Sur R1 :
 
-crypto isakmp key Cisco123 address 10.0.0.2 
+	crypto isakmp key Cisco123 address 10.0.0.2 
 
 
 Sur R2 :
 
-crypto isakmp key Cisco123 address 10.0.0.1
+	crypto isakmp key Cisco123 address 10.0.0.1
 
 Création du transform-set :
 
 Sur R1 et R2 :
 
-crypto ipsec transform-set MYSET esp-aes esp-sha-hmac
- mode tunnel
+	crypto ipsec transform-set MYSET esp-aes esp-sha-hmac
+ 	mode tunnel
 
 Finir par crée la crypto map :
 
@@ -299,10 +292,10 @@ crypto map VPN-MAP 10 ipsec-isakmp
 
 Sur R2 :
 
-crypto map VPN-MAP 10 ipsec-isakmp
- set peer 10.0.0.1
- set transform-set MYSET
- match address VPN-TRAFFIC
+	crypto map VPN-MAP 10 ipsec-isakmp
+ 	set peer 10.0.0.1
+ 	set transform-set MYSET
+ 	match address VPN-TRAFFIC
 
 On applque ensuite la crypto map sur les interface WAN :
 
@@ -310,19 +303,19 @@ On applque ensuite la crypto map sur les interface WAN :
 
 Sur R1 :
 
-interface fa0/1
- crypto map VPN-MAP
+	interface fa0/1
+ 	crypto map VPN-MAP
 
 Sur R2 :
 
-interface fa0/0
- crypto map VPN-MAP
+	interface fa0/0
+ 	crypto map VPN-MAP
 
 Pour la vérification :
 
 Faire sur R1 ou R2 :
 
-# show crypto isakmp sa
+ show crypto isakmp sa
 
 Réponse : IPv4 Crypto ISAKMP SA
 dst             src             state          conn-id slot status
@@ -330,28 +323,28 @@ dst             src             state          conn-id slot status
 IPv6 Crypto ISAKMP SA
 
 
-# show crypto ipsec sa
+ show crypto ipsec sa
 
 Réponse :
 
-interface: FastEthernet0/0
-    Crypto map tag: VPN-MAP, local addr 10.0.0.2
+	interface: FastEthernet0/0
+   	 Crypto map tag: VPN-MAP, local addr 10.0.0.2
 
-   protected vrf: (none)
-   local  ident (addr/mask/prot/port): (192.168.40.0/255.255.255.0/0/0)
-   remote  ident (addr/mask/prot/port): (192.168.10.0/255.255.255.0/0/0)
-   current_peer 10.0.0.1 port 500
-    PERMIT, flags={origin_is_acl,}
-   #pkts encaps: 0, #pkts encrypt: 0, #pkts digest: 0
-   #pkts decaps: 0, #pkts decrypt: 0, #pkts verify: 0
-   #pkts compressed: 0, #pkts decompressed: 0
-   #pkts not compressed: 0, #pkts compr. failed: 0
-   #pkts not decompressed: 0, #pkts decompress failed: 0
-   #send errors 0, #recv errors 0
+   	protected vrf: (none)
+   	local  ident (addr/mask/prot/port): (192.168.40.0/255.255.255.0/0/0)
+   	remote  ident (addr/mask/prot/port): (192.168.10.0/255.255.255.0/0/0)
+   	current_peer 10.0.0.1 port 500
+    	PERMIT, flags={origin_is_acl,}
+   	#pkts encaps: 0, #pkts encrypt: 0, #pkts digest: 0
+   	#pkts decaps: 0, #pkts decrypt: 0, #pkts verify: 0
+   	#pkts compressed: 0, #pkts decompressed: 0
+   	#pkts not compressed: 0, #pkts compr. failed: 0
+   	#pkts not decompressed: 0, #pkts decompress failed: 0
+   	#send errors 0, #recv errors 0
 
-     local crypto endpt.: 10.0.0.2, remote crypto endpt.:10.0.0.1
-     path mtu 1500, ip mtu 1500, ip mtu idb FastEthernet0/0
-     current outbound spi: 0x0(0)
+     	local crypto endpt.: 10.0.0.2, remote crypto endpt.:10.0.0.1
+     	path mtu 1500, ip mtu 1500, ip mtu idb FastEthernet0/0
+     	current outbound spi: 0x0(0)
 
      inbound esp sas:
 
@@ -376,28 +369,28 @@ Dans notre sénario on va interdire tout le trafic IP du VLAN 20 vers VLAN 10 et
 
 Crée un ACL, sur le router R1 :
 
-ip access-list extended ACL-SECURITE
- deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
- permit ip any any
+	ip access-list extended ACL-SECURITE
+ 	deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+ 	permit ip any any
 
 Ensuite l'appliquer a l'interface du router R1 :
 
-interface fa0/0.10
- ip access-group ACL-SECURITE in
+	interface fa0/0.10
+ 	ip access-group ACL-SECURITE in
 
 Vérification : On ping du PC2 (vlan 20) vers un autre pc d'un autre réseau :
 
 Sur PC2 (vlan 20): ping 192.168.10.30
 
-Pinging 192.168.10.30 with 32 bytes of data:
+	Pinging 192.168.10.30 with 32 bytes of data:
 
-Reply from 192.168.20.1: Destination host unreachable.
-Reply from 192.168.20.1: Destination host unreachable.
-Reply from 192.168.20.1: Destination host unreachable.
-Reply from 192.168.20.1: Destination host unreachable.
+	Reply from 192.168.20.1: Destination host unreachable.
+	Reply from 192.168.20.1: Destination host unreachable.
+	Reply from 192.168.20.1: Destination host unreachable.
+	Reply from 192.168.20.1: Destination host unreachable.
 
-Ping statistics for 192.168.10.30:
-    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss)
+	Ping statistics for 192.168.10.30:
+    	Packets: Sent = 4, Received = 0, Lost = 4 (100% loss)
 
 Voici une version corrigée et mieux formulée :
 
@@ -408,34 +401,35 @@ Ici, la réponse indique que le destinataire est injoignable, ce qui confirme qu
 Objectif :Attribuer automatiquement et dynamiquement les adresses IP et paramètres réseau aux équipements, afin de simplifier la gestion, réduire les erreurs de configuration et optimiser l’administration du réseau.
 
 On ajoute un serveur DHCP , au vlan 10
+
 Et on configure le switch 1 (S1) :
 
-interface range fa0/4
-switchport mode access
-switchport access vlan 10
+	interface range fa0/4
+	switchport mode access
+	switchport access vlan 10
 
 Ensuite, configurer de façon statique le serveur DHCP :  Comme le pc précédement (étape 1)
 
 On ajoute ensuite la commande suivante dans le routeur R1, afin que les PC des autres VLAN puissent obtenir une adresse IP grâce au serveur DHCP.
 
-interface Fa0/0.20 (vlan 20)
-ip helper-address 192.168.10.20  ← IP du serveur DHCP dans VLAN 10
-exit
+	interface Fa0/0.20 (vlan 20)
+	ip helper-address 192.168.10.20  ← IP du serveur DHCP dans VLAN 10
+	exit
 
 
-interface Fa0/0.30 (vlan 30)
-ip helper-address 192.168.10.20  ← IP du serveur DHCP dans VLAN 10
-exit
+	interface Fa0/0.30 (vlan 30)
+	ip helper-address 192.168.10.20  ← IP du serveur DHCP dans VLAN 10
+	exit
 
 On fini par configurer les pools dans le serveur DHCP :
 
-![Topologie finale](images/Configuration_pool_Serveur_DHCP.png)
+<img width="406" height="333" alt="Configuration_pool_Serveur_DHCP" src="https://github.com/user-attachments/assets/682848fc-f956-45c8-96b5-0df69d373026" />
 
 On fait de même pour tous les VLAN
 
 Vérification : Aller sur un PC (1 ou 3) > IP config > et cocher DHCP :
 
-![Topologie finale](images/PC3_DHCP.png)
+<img width="500" height="109" alt="PC3_DHCP" src="https://github.com/user-attachments/assets/7355562d-0256-413e-9246-45359c7e2de6" />
 
 
 ### Étape 6 : HSRP redondance 
@@ -448,82 +442,81 @@ Mettre en place un nouveau router R3-HRCP :
 Configuration du switch S1 :
 
 
-interface fa0/1   # Port vers R1
- switchport mode trunk
- switchport trunk allowed vlan 10,20,30
+	interface fa0/1   # Port vers R1
+ 	switchport mode trunk
+	 switchport trunk allowed vlan 10,20,30
 
-interface fa0/5   # Port vers R3-HRSP
- switchport mode trunk
- switchport trunk allowed vlan 10,20,30
-
-
+	interface fa0/5   # Port vers R3-HRSP
+ 	switchport mode trunk
+ 	switchport trunk allowed vlan 10,20,30
 
 Configuration de HRCP Router R3-HRCP :
 
-conf t
-interface fa0/0.10
- encapsulation dot1Q 10
- ip address 192.168.10.3 255.255.255.0
- standby 1 ip 192.168.10.1
- standby 1 priority 100
- standby 1 preempt
+	conf t
+	interface fa0/0.10
+ 	encapsulation dot1Q 10
+ 	ip address 192.168.10.3 255.255.255.0
+ 	standby 1 ip 192.168.10.1
+ 	standby 1 priority 100
+ 	standby 1 preempt
 
-interface fa0/0.20
- encapsulation dot1Q 20
- ip address 192.168.20.3 255.255.255.0
- standby 2 ip 192.168.20.1
- standby 2 priority 100
- standby 2 preempt
+	interface fa0/0.20
+	 encapsulation dot1Q 20
+ 	ip address 192.168.20.3 255.255.255.0
+ 	standby 2 ip 192.168.20.1
+	 standby 2 priority 100
+ 	standby 2 preempt
 
-interface fa0/0.30
- encapsulation dot1Q 30
- ip address 192.168.30.3 255.255.255.0
- standby 3 ip 192.168.30.1
- standby 3 priority 100
- standby 3 preempt
+	interface fa0/0.30
+	 encapsulation dot1Q 30
+	 ip address 192.168.30.3 255.255.255.0
+ 	standby 3 ip 192.168.30.1
+	 standby 3 priority 100
+ 	standby 3 preempt
 
 
 configuration de HRCP Router R1 :
 
-iconf t
-interface fa0/0.10
- encapsulation dot1Q 10
- ip address 192.168.10.2 255.255.255.0
- standby 1 ip 192.168.10.1
- standby 1 priority 110
- standby 1 preempt
+	iconf t
+	interface fa0/0.10
+ 	encapsulation dot1Q 10
+ 	ip address 192.168.10.2 255.255.255.0
+ 	standby 1 ip 192.168.10.1
+ 	standby 1 priority 110
+ 	standby 1 preempt
 
-interface fa0/0.20
- encapsulation dot1Q 20
- ip address 192.168.20.2 255.255.255.0
- standby 2 ip 192.168.20.1
- standby 2 priority 110
- standby 2 preempt
+	interface fa0/0.20
+ 	encapsulation dot1Q 20
+ 	ip address 192.168.20.2 255.255.255.0
+ 	standby 2 ip 192.168.20.1
+ 	standby 2 priority 110
+	 standby 2 preempt
 
-interface fa0/0.30
- encapsulation dot1Q 30
- ip address 192.168.30.2 255.255.255.0
- standby 3 ip 192.168.30.1
- standby 3 priority 110
- standby 3 preempt
+	interface fa0/0.30
+ 	encapsulation dot1Q 30
+ 	ip address 192.168.30.2 255.255.255.0
+ 	standby 3 ip 192.168.30.1
+ 	standby 3 priority 110
+	standby 3 preempt
 
 Vérification : on shutdonw R1 :
 
-![Topologie finale](images/R1_shutdown.png)
+<img width="331" height="224" alt="R1_shutdown" src="https://github.com/user-attachments/assets/e6f5609a-e538-4c4b-adad-19e88dc7440c" />
+
 
 On ping de pc1->pc3 :ping 192.168.30.30
 
 Pinging 192.168.30.30 with 32 bytes of data:
 
-Request timed out.
-Request timed out.
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Request timed out.
+	Request timed out.
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
 
-Ping statistics for 192.168.30.30:
-    Packets: Sent = 4, Received = 2, Lost = 2 (50% loss),
-Approximate round trip times in milli-seconds:
-    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+	Ping statistics for 192.168.30.30:
+	    Packets: Sent = 4, Received = 2, Lost = 2 (50% loss),
+	Approximate round trip times in milli-seconds:
+  	  Minimum = 0ms, Maximum = 0ms, Average = 0ms
 
 Donc la redondance fonctionne.
 
@@ -532,20 +525,20 @@ Objectif :SNMP permet de surveiller et gérer à distance les équipements rése
 
 Configuration minimal de SNMP sur Cisco Packet Tracer sur router R1 :
 
-snmp-server community public RO
-snmp-server community private RW
-logging buffered 4096
-exit
+	snmp-server community public RO
+	snmp-server community private RW
+	logging buffered 4096
+	exit
 
 Vérification :
 
-show snmp
-show logging
+	show snmp
+	show logging
 
 Résultat :
 
-snmp-server community public RO
-snmp-server community private RW
+	snmp-server community public RO
+	snmp-server community private RW
 
 
 ### Étape 7 : configurer les serveurs Web et DNS
@@ -559,15 +552,18 @@ Ensuite, on configure le serveur Web :
 
 On le fait directement grâce au serveur DHCP.
 	
-![Topologie finale](images/ServeurWeb.png)
+<img width="525" height="411" alt="ServeurWeb" src="https://github.com/user-attachments/assets/1a28ddee-7a54-41ba-985e-f1cd751d07c7" />
+
 
 Et puis ensuite on configure le service du serveur :
 
-![Topologie finale](images/Service_serveurWeb.png)
+<img width="524" height="278" alt="Service_serveurWeb" src="https://github.com/user-attachments/assets/87296c7d-a37a-4c83-a747-d5d971637a41" />
+
 
 Vérification : Sur PC1 > Desktop > Web Browser > http://192.168.10.2
 
-![Topologie finale](images/WebBrowser.png)
+<img width="523" height="247" alt="WebBrowser" src="https://github.com/user-attachments/assets/52dceddc-6931-4702-b521-089fcfc9c436" />
+
 
 On voit que l’on a bien accès au Web à partir d’un PC (en l’occurrence le PC1 ici).
 
@@ -575,27 +571,29 @@ Ensuite, on configure le serveur DNS :
 
 On le fait de manière statique.
 
-![Topologie finale](images/Serveur_DNS.png)
+<img width="523" height="383" alt="Serveur_DNS" src="https://github.com/user-attachments/assets/777a8429-5601-4f72-b5e2-a28eb8f5f820" />
+
 
 Et puis ensuite on configure le service du serveur :
 
-![Topologie finale](images/Service_serveurDNS.png)
+<img width="524" height="267" alt="Service_serveurDNS" src="https://github.com/user-attachments/assets/5ba8d9aa-7537-492f-9509-0ae512e78d45" />
+
 
 Ensuite on configure les PC avec l'adresse IP du serveur DNS( ou directement avec le serveur DHCP)
 
 Vérification : de PC1 -> PC3 : ping pc3-it
 
-Pinging 192.168.30.30 with 32 bytes of data:
+	Pinging 192.168.30.30 with 32 bytes of data:
 
-Reply from 192.168.30.30: bytes=32 time=1ms TTL=127
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
-Reply from 192.168.30.30: bytes=32 time=10ms TTL=127
-Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time=1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time=10ms TTL=127
+	Reply from 192.168.30.30: bytes=32 time<1ms TTL=127
 
-Ping statistics for 192.168.30.30:
-    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
-Approximate round trip times in milli-seconds:
-    Minimum = 0ms, Maximum = 10ms, Average = 2ms
+	Ping statistics for 192.168.30.30:
+	    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+	Approximate round trip times in milli-seconds:
+  	  Minimum = 0ms, Maximum = 10ms, Average = 2ms
 
 Donc le serveur DNS est OK.
 
