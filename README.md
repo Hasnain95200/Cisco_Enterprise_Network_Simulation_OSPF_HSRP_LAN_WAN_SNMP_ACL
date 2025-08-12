@@ -32,9 +32,7 @@ La topologie est composée de :
 ### Schéma réseau
 Voici la topologie finale de notre réseau :
 
-![Topologie finale](images/Configuration_étape1_PC1.png)<img width="638" height="306" alt="Topologie_final" src="https://github.com/user-attachments/assets/af991475-ebe5-465b-bd37-e8da4f482b77" />
-
-
+<img width="638" height="306" alt="Topologie_final" src="https://github.com/user-attachments/assets/af991475-ebe5-465b-bd37-e8da4f482b77" />
 
 ---
 
@@ -64,12 +62,17 @@ Objectif : Créer les VLANs, attribuer les IP sur les sous-interfaces des routeu
 Sur le Switch 1 (S1 du site 1) :
 
 enable
+
 configure terminal
 
 ! Création des VLAN
+
 vlan 10
+
  name Vlan Admin
+ 
 vlan 20
+
  name Vlan RH
 vlan 30
  name Vlan IT
