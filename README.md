@@ -32,7 +32,8 @@ La topologie est composée de :
 ### Schéma réseau
 Voici la topologie finale de notre réseau :
 
-![Topologie finale](images/Configuration_étape1_PC1.png)
+![Topologie finale](images/Configuration_étape1_PC1.png)<img width="638" height="306" alt="Topologie_final" src="https://github.com/user-attachments/assets/af991475-ebe5-465b-bd37-e8da4f482b77" />
+
 
 
 ---
