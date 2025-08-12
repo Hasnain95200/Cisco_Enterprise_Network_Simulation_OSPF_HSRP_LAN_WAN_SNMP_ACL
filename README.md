@@ -232,9 +232,9 @@ Depuis R2 :
 
 Réponse : 
 
-O    192.168.10.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
-O    192.168.20.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
-O    192.168.30.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
+	O    192.168.10.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
+	O    192.168.20.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
+	O    192.168.30.0 [110/2] via 10.0.0.1, 00:31:31, FastEthernet0/0
 
 Donc les routes vers les différents sous-réseaux du site 1 sont bien connues et correctement apprises, ce qui confirme le bon fonctionnement d’OSPF.
 
